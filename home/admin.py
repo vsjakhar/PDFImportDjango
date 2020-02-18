@@ -5,6 +5,7 @@ from .models import *
 import sys, fitz
 from pathlib import Path
 from django.utils.safestring import mark_safe
+import re
 
 # Register your models here.
 
@@ -60,7 +61,8 @@ class CollectionAdmin(admin.ModelAdmin):
 			for page in doc:
 				html_text += page.getText("html")
 			# print(html_text)
-			obj.content = html_text
+			clean_data = re.sub("(<img.*?>)", "", html_text, 0, re.IGNORECASE | re.DOTALL | re.MULTILINE)
+			obj.content = clean_data
 		super().save_model(request, obj, form, change)
 
 admin.site.register(User, CustomUserAdmin)
