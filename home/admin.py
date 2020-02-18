@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.conf import settings
 from .models import *
+import sys, fitz
 
 # Register your models here.
 
@@ -39,5 +41,20 @@ class CustomUserAdmin(UserAdmin):
 	def has_delete_permission(self, request, obj=None):
 		return False
 
+class CollectionAdmin(admin.ModelAdmin):
+	list_display=['title', 'user', 'utimestamp', 'status']
+	search_fields=['title', 'user__username', 'timestamp', 'status']
+	autocomplete_fields=['user']
+
+	def save_model(self, request, obj, form, change):
+		path = settings.BASE_DIR+'/media/'+str(obj.pdf)
+		doc = fitz.open(path)
+		html_text = ""
+		for page in doc:
+			html_text += page.getText("html")
+		# print(html_text)
+		obj.content = html_text
+		super().save_model(request, obj, form, change)
+
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Collection)
+admin.site.register(Collection, CollectionAdmin)
