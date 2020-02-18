@@ -43,8 +43,8 @@ class Collection(models.Model):
 	content = models.TextField(blank=True)
 	timestamp = models.DateTimeField(auto_now_add=True, null=True)
 	utimestamp = models.DateTimeField(auto_now=True)
-	track = models.TextField(blank=True)
-	utrack = models.TextField(blank=True)
+	track = models.TextField(blank=True, editable=False)
+	utrack = models.TextField(blank=True, editable=False)
 	status = models.CharField(max_length=10, choices=status, default='Acitve')
 
 	def __str__(self):
