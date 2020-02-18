@@ -34,8 +34,19 @@ class User(AbstractUser):
 	verified = models.BooleanField(default=False)
 	multilogin = models.BooleanField(default=False)
 	source = models.CharField(max_length=10, choices=source, default='Website')
-	timestamp=models.DateTimeField(auto_now_add=True, null=True)
-	utimestamp=models.DateTimeField(auto_now=True)
-	track=models.TextField(blank=True)
-	utrack=models.TextField(blank=True)
-	status=models.CharField(max_length=10, choices=status, default='Acitve')
+
+class Collection(models.Model):
+	"""docstring for Collection"""
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	pdf = models.FileField(upload_to='pdf/')
+	title = models.CharField(max_length=50)
+	content = models.TextField(blank=True)
+	timestamp = models.DateTimeField(auto_now_add=True, null=True)
+	utimestamp = models.DateTimeField(auto_now=True)
+	track = models.TextField(blank=True)
+	utrack = models.TextField(blank=True)
+	status = models.CharField(max_length=10, choices=status, default='Acitve')
+
+	def __str__(self):
+		return self.title
+		

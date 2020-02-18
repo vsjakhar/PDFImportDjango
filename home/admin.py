@@ -40,3 +40,4 @@ class CustomUserAdmin(UserAdmin):
 		return False
 
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Collection)
