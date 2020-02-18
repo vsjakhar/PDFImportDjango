@@ -3,6 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.conf import settings
 from .models import *
 import sys, fitz
+from pathlib import Path
+from django.utils.safestring import mark_safe
 
 # Register your models here.
 
@@ -45,15 +47,20 @@ class CollectionAdmin(admin.ModelAdmin):
 	list_display=['title', 'user', 'utimestamp', 'status']
 	search_fields=['title', 'user__username', 'timestamp', 'status']
 	autocomplete_fields=['user']
+	readonly_fields = ['pdf_display',]
+
+	def pdf_display(self, obj):
+		return mark_safe(obj.content)
 
 	def save_model(self, request, obj, form, change):
 		path = settings.BASE_DIR+'/media/'+str(obj.pdf)
-		doc = fitz.open(path)
-		html_text = ""
-		for page in doc:
-			html_text += page.getText("html")
-		# print(html_text)
-		obj.content = html_text
+		if Path(path).is_file():
+			doc = fitz.open(path)
+			html_text = ""
+			for page in doc:
+				html_text += page.getText("html")
+			# print(html_text)
+			obj.content = html_text
 		super().save_model(request, obj, form, change)
 
 admin.site.register(User, CustomUserAdmin)
