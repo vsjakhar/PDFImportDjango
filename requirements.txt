@@ -20,7 +20,7 @@ nipype==1.4.2
 numpy==1.18.1
 packaging==20.1
 pandas==1.0.1
-Pillow==7.0.0
+Pillow==9.0.1
 prov==1.5.3
 pydot==1.4.1
 pydotplus==2.0.2
