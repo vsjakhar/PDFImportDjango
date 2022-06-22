@@ -17,7 +17,7 @@ networkx==2.4
 neurdflib==5.0.1
 nibabel==3.0.1
 nipype==1.4.2
-numpy==1.18.1
+numpy==1.22.0
 packaging==20.1
 pandas==1.0.1
 Pillow==7.0.0
